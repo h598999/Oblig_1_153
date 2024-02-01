@@ -16,6 +16,8 @@ public class DataManager extends Application {
 
         photoList = new ArrayList<>();
         photoList.add(new PhotoInfo("Java", Uri.parse("android.resource://com.example.quiz/" + R.drawable.java)));
+        photoList.add(new PhotoInfo("Python", Uri.parse("android.resource://com.example.quiz/" + R.drawable.python)));
+        photoList.add(new PhotoInfo("Neovim", Uri.parse("android.resource://com.example.quiz/" + R.drawable.neovim)));
     }
 
     public List<PhotoInfo> getPhotoList(){
