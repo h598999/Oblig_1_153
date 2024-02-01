@@ -20,7 +20,7 @@ public class DataManager extends Application {
         photoList.add(new PhotoInfo("Java", Uri.parse("android.resource://com.example.quiz/" + R.drawable.java)));
         photoList.add(new PhotoInfo("Python", Uri.parse("android.resource://com.example.quiz/" + R.drawable.python)));
         photoList.add(new PhotoInfo("Neovim", Uri.parse("android.resource://com.example.quiz/" + R.drawable.neovim)));
-        this.sort(this.getPhotoList(), isListSorted(this.getPhotoList()));
+        this.sort(this.getPhotoList(), true);
     }
 
     public List<PhotoInfo> getPhotoList(){
@@ -32,7 +32,7 @@ public class DataManager extends Application {
     }
 
     public static void sort(List<PhotoInfo> photoList, boolean isSorted) {
-        if (isSorted) {
+        if (!isSorted) {
             Collections.sort(photoList, Comparator.comparing(PhotoInfo::getName, Collections.reverseOrder()));
         } else {
             // Sort alphabetically
@@ -40,23 +40,20 @@ public class DataManager extends Application {
         }
     }
 
-    public static boolean isListSorted(List<PhotoInfo> photoList) {
-        String name1 = photoList.get(0).getName();
-        String name2 = photoList.get(1).getName();
+    public static boolean isListSorted(List<PhotoInfo> list) {
+        // Check if the list is empty or has only one element
+        if (list == null || list.size() <= 1) {
+            return true;
+        }
 
-        // Check if the first two elements are in ascending order
-        boolean isAscending = name1.compareTo(name2) <= 0;
-
-        // Iterate through the rest of the list to ensure it is sorted
-        for (int i = 1; i < photoList.size() - 1; i++) {
-            name1 = photoList.get(i).getName();
-            name2 = photoList.get(i + 1).getName();
-
-            if ((isAscending && name1.compareTo(name2) > 0) || (!isAscending && name1.compareTo(name2) < 0)) {
-                return false; // The list is not sorted
+        // Iterate through the list to check for alphabetical order
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i).getName().compareTo(list.get(i + 1).getName()) > 0) {
+                return false;
             }
         }
-        return true; // The list is sorted
+        // If no out-of-order elements found, the list is sorted
+        return true;
     }
 
 

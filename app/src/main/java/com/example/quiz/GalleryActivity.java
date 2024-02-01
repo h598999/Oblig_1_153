@@ -26,7 +26,7 @@ public class GalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gallery);
 
         quizDataManager = (DataManager) getApplication();
-        quizDataManager.sort(quizDataManager.getPhotoList(), isListSorted(quizDataManager.getPhotoList())); //
+        DataManager.sort(quizDataManager.getPhotoList(), DataManager.isListSorted(quizDataManager.getPhotoList())); //
 
         Button backButton = findViewById(R.id.backGallery_Button);
         FloatingActionButton sortButton = findViewById(R.id.GallerySort_Button);
@@ -59,7 +59,7 @@ public class GalleryActivity extends AppCompatActivity {
     }
 
     private void Sort(RecyclerView imageViews, PhotoAdapter adapter){
-        sort(quizDataManager.getPhotoList(), isListSorted(quizDataManager.getPhotoList()));
+        DataManager.sort(quizDataManager.getPhotoList(), !DataManager.isListSorted(quizDataManager.getPhotoList()));
         imageViews.setAdapter(adapter);
         imageViews.setLayoutManager(new LinearLayoutManager(this));
         adapter.notifyDataSetChanged();
@@ -73,35 +73,6 @@ public class GalleryActivity extends AppCompatActivity {
         PhotoAdapter adapter = new PhotoAdapter(quizDataManager, this);
         imageViews.setAdapter(adapter);
         imageViews.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private void sort(List<PhotoInfo> photoList, boolean isSorted) {
-        if (isSorted) {
-            Collections.sort(photoList, Comparator.comparing(PhotoInfo::getName, Collections.reverseOrder()));
-        } else {
-            // Sort alphabetically
-            Collections.sort(photoList, Comparator.comparing(PhotoInfo::getName));
-        }
-    }
-    private boolean isListSorted(List<PhotoInfo> photoList) {
-
-        String name1 = photoList.get(0).getName();
-        String name2 = photoList.get(1).getName();
-
-        // Check if the first two elements are in ascending order
-        boolean isAscending = name1.compareTo(name2) <= 0;
-
-        // Iterate through the rest of the list to ensure it is sorted
-        for (int i = 1; i < photoList.size() - 1; i++) {
-            name1 = photoList.get(i).getName();
-            name2 = photoList.get(i + 1).getName();
-
-            if ((isAscending && name1.compareTo(name2) > 0) || (!isAscending && name1.compareTo(name2) < 0)) {
-                return false; // The list is not sorted
-            }
-        }
-
-        return true; // The list is sorted
     }
 }
 
