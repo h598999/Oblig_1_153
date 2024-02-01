@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Quiz</string>
+    <string name="welcome">Welcome to the quiz app!</string>
+    <string name="gallery">Gallery</string>
+    <string name="quiz">Quiz</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
+    <string name="back">Back</string>
+    <string name="add_picture">Add picture</string>
+    <string name="velkommen_til_quiz">Velkommen til quiz</string>
+    <string name="upload">Upload Photo</string>
+    <string name="submit">Submit</string>
+    <string name="name">Name</string>
+    <string name="button">Button</string>
 </resources>
