@@ -6,6 +6,7 @@ public class PhotoInfo {
 
     private String name;
     private Uri photoUri;
+    int index;
 
     public PhotoInfo(String name, Uri photoUri){
         this.name = name;
@@ -18,5 +19,13 @@ public class PhotoInfo {
 
     public Uri getPhotoUri(){
         return photoUri;
+    }
+
+    public void setIndex(int index){
+        this.index = index;
+    }
+
+    public int getIndex(){
+        return this.index;
     }
 }

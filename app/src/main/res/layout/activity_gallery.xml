@@ -35,4 +35,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.358" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/GallerySort_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.368"
+        app:layout_constraintStart_toEndOf="@+id/new_Button"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerImageView_Gallery"
+        app:layout_constraintVertical_bias="0.291"
+        app:srcCompat="@android:drawable/ic_menu_sort_alphabetically" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

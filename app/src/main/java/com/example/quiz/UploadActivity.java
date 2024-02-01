@@ -37,7 +37,7 @@ public class UploadActivity extends AppCompatActivity {
             public void onClick(View v) {
                 openGallery();
             }
-            });
+        });
 
         submitButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -74,6 +74,7 @@ public class UploadActivity extends AppCompatActivity {
         int uid = Binder.getCallingUid();
         String callingPackage = getPackageManager().getNameForUid(uid);
         getApplication().grantUriPermission(callingPackage, imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        DataManager.sort(quizDataManager.getPhotoList(), (DataManager.isListSorted(quizDataManager.getPhotoList())));
         reset();
     }
 
