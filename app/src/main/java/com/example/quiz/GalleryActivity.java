@@ -26,7 +26,7 @@ public class GalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gallery);
 
         quizDataManager = (DataManager) getApplication();
-        DataManager.sort(quizDataManager.getPhotoList(), DataManager.isListSorted(quizDataManager.getPhotoList())); //
+        DataManager.sort(quizDataManager.getPhotoList(), DataManager.isListSorted(quizDataManager.getPhotoList()));
 
         Button backButton = findViewById(R.id.backGallery_Button);
         FloatingActionButton sortButton = findViewById(R.id.GallerySort_Button);
