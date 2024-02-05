@@ -79,8 +79,6 @@ public class Quiz extends AppCompatActivity {
     private void answer(Boolean isCorrect, ImageView view, Button pressed, Button notPressed, Button notPressed2, List<PhotoInfo> photoList, List<Integer> indexList, TextView score){
         if (isCorrect){
             pressed.setBackgroundColor(Color.GREEN);
-            notPressed.setBackgroundColor(Color.RED);
-            notPressed2.setBackgroundColor(Color.RED);
             Handler handler = new Handler();
             Score++;
             Plays++;
@@ -92,8 +90,6 @@ public class Quiz extends AppCompatActivity {
             }, DELAY_MILLIS);
         } else {
             pressed.setBackgroundColor(Color.RED);
-            notPressed.setBackgroundColor(Color.RED);
-            notPressed2.setBackgroundColor(Color.RED);
             Handler handler = new Handler();
             Plays++;
             handler.postDelayed(new Runnable() {

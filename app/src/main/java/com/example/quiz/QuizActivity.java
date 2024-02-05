@@ -13,20 +13,27 @@ public class QuizActivity extends AppCompatActivity {
 
     private static final int DELAY_MILLIS = 5000;
 
+    private DataManager quizDataManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
         Button backButton = findViewById(R.id.backQuiz_button);
+        quizDataManager = (DataManager) getApplication();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(QuizActivity.this, Quiz.class);
-                startActivity(intent);
-                finish();
+                if (quizDataManager.getPhotoList().isEmpty()) {
+                    finish();
+                } else {
+                    Intent intent = new Intent(QuizActivity.this, Quiz.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         }, DELAY_MILLIS);
 
