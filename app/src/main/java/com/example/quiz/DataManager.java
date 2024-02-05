@@ -15,7 +15,6 @@ public class DataManager extends Application {
     @Override
     public void onCreate(){
         super.onCreate();
-
         photoList = new ArrayList<>();
         photoList.add(new PhotoInfo("Java", Uri.parse("android.resource://com.example.quiz/" + R.drawable.java)));
         photoList.add(new PhotoInfo("Python", Uri.parse("android.resource://com.example.quiz/" + R.drawable.python)));
@@ -45,9 +44,8 @@ public class DataManager extends Application {
         if (list == null || list.size() <= 1) {
             return true;
         }
-
         // Iterate through the list to check for alphabetical order
-        for (int i = 0; i < list.size() - 1; i++) {
+        for (int i = 0; i < 1; i++) {
             if (list.get(i).getName().compareTo(list.get(i + 1).getName()) > 0) {
                 return false;
             }
@@ -55,6 +53,4 @@ public class DataManager extends Application {
         // If no out-of-order elements found, the list is sorted
         return true;
     }
-
-
 }

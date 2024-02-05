@@ -78,6 +78,9 @@ public class Quiz extends AppCompatActivity {
 
     private void answer(Boolean isCorrect, ImageView view, Button pressed, Button notPressed, Button notPressed2, List<PhotoInfo> photoList, List<Integer> indexList, TextView score){
         if (isCorrect){
+            pressed.setClickable(false);
+            notPressed.setClickable(false);
+            notPressed2.setClickable(false);
             pressed.setBackgroundColor(Color.GREEN);
             Handler handler = new Handler();
             Score++;
@@ -89,6 +92,10 @@ public class Quiz extends AppCompatActivity {
                 }
             }, DELAY_MILLIS);
         } else {
+            pressed.setClickable(false);
+            notPressed.setClickable(false);
+            notPressed2.setClickable(false);
+            colourCorrect(pressed, notPressed, notPressed2);
             pressed.setBackgroundColor(Color.RED);
             Handler handler = new Handler();
             Plays++;
@@ -108,13 +115,27 @@ public class Quiz extends AppCompatActivity {
 
         view.setImageURI(currentCorrect.getPhotoUri());
 
+        option1.setClickable(true);
+        option2.setClickable(true);
+        option3.setClickable(true);
 
-        option1.setBackgroundColor(Color.MAGENTA);
-        option2.setBackgroundColor(Color.MAGENTA);
-        option3.setBackgroundColor(Color.MAGENTA);
+        option1.setBackgroundColor(Color.parseColor("#FF673AB7"));
+        option2.setBackgroundColor(Color.parseColor("#FF673AB7"));
+        option3.setBackgroundColor(Color.parseColor("#FF673AB7"));
         option1.setText(photoList.get(indexList.get(0)).getName());
         option2.setText(photoList.get(indexList.get(1)).getName());
         option3.setText(photoList.get(indexList.get(2)).getName());
         score.setText(Score + "/" + Plays);
     }
+
+    private void colourCorrect(Button option1, Button option2, Button option3){
+        if (checkAnswer(option1.getText().toString())){
+            option1.setBackgroundColor(Color.GREEN);
+        } else if(checkAnswer(option2.getText().toString())){
+            option2.setBackgroundColor(Color.GREEN);
+        } else {
+            option3.setBackgroundColor(Color.GREEN);
+        }
+    }
 }
+
