@@ -1,12 +1,10 @@
 package com.example.quiz;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,56 +16,72 @@ import java.util.Collections;
 import java.util.List;
 
 public class Quiz extends AppCompatActivity {
-
     private DataManager quizDataManager;
     private int Score = 0;
     private int Plays = 0;
     private PhotoInfo currentCorrect;
-
+    private ImageView view;
+    private Button option1;
+    private Button option2;
+    private Button option3;
+    private TextView score;
+    private TextView countDown;
     private final static int DELAY_MILLIS = 2000;
+    private boolean hardmode;
+
+    private List<PhotoInfo> photoList;
+    private List<Integer> indexList;
+
+    private List<PhotoInfo> notAnswered;
+
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceBundle){
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.activity_game);
-        quizDataManager = (DataManager) getApplication();
+        this.quizDataManager = (DataManager) getApplication();
         Score = 0;
-        List<PhotoInfo> photoList = quizDataManager.getPhotoList();
-        List<Integer> indexList = new ArrayList<>();
+        photoList = quizDataManager.getPhotoList();
+        notAnswered = quizDataManager.getPhotoList();
+        indexList = new ArrayList<>();
         indexList.add(0);
         indexList.add(1);
         indexList.add(2);
 
 
-        ImageView view = findViewById(R.id.QuizImage_IMAGEVIEW);
-        Button option1 = findViewById(R.id.QuizOption1_BUTTON);
-        Button option2 = findViewById(R.id.QuizOption2_BUTTON);
-        Button option3 = findViewById(R.id.QuizOption3_BUTTON);
-        TextView score = findViewById(R.id.ScoreTextView_GAME);
+        view = findViewById(R.id.QuizImage_IMAGEVIEW);
+        option1 = findViewById(R.id.QuizOption1_BUTTON);
+        option2 = findViewById(R.id.QuizOption2_BUTTON);
+        option3 = findViewById(R.id.QuizOption3_BUTTON);
+        score = findViewById(R.id.ScoreTextView_GAME);
+        countDown = findViewById(R.id.GameCountDown_TEXTVIEW);
+        hardmode = getIntent().getBooleanExtra("hardmode", false);
+        Log.d("HardMode", ""+hardmode);
 
-        refresh(view, option1, option2, option3, photoList, indexList, score);
+        refresh(photoList, indexList);
 
 
-        option1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Boolean isCorrect = checkAnswer(option1.getText().toString());
-                answer(isCorrect, view, option1, option2, option3, photoList, indexList, score);
+        option1.setOnClickListener(v -> {
+            if (hardmode){
+                timer.cancel();
             }
+            Boolean isCorrect = checkAnswer(option1.getText().toString());
+            answer(isCorrect, option1, option2, option3);
         });
-        option2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Boolean isCorrect = checkAnswer(option2.getText().toString());
-                answer(isCorrect, view, option2, option1, option3, photoList, indexList, score);
+        option2.setOnClickListener(v -> {
+            if (hardmode){
+                timer.cancel();
             }
+            Boolean isCorrect = checkAnswer(option2.getText().toString());
+            answer(isCorrect, option2, option1, option3);
         });
-        option3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Boolean isCorrect = checkAnswer(option3.getText().toString());
-                answer(isCorrect, view, option3, option2, option1, photoList, indexList, score);
+        option3.setOnClickListener(v -> {
+            if (hardmode){
+                timer.cancel();
             }
+            Boolean isCorrect = checkAnswer(option3.getText().toString());
+            answer(isCorrect, option3, option2, option1);
         });
     }
 
@@ -76,7 +90,7 @@ public class Quiz extends AppCompatActivity {
         return currentCorrect.getName().equals(name);
     }
 
-    private void answer(Boolean isCorrect, ImageView view, Button pressed, Button notPressed, Button notPressed2, List<PhotoInfo> photoList, List<Integer> indexList, TextView score){
+    private void answer(Boolean isCorrect, Button pressed, Button notPressed, Button notPressed2){
         if (isCorrect){
             pressed.setClickable(false);
             notPressed.setClickable(false);
@@ -85,12 +99,7 @@ public class Quiz extends AppCompatActivity {
             Handler handler = new Handler();
             Score++;
             Plays++;
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    refresh(view, pressed, notPressed, notPressed2, photoList, indexList, score);
-                }
-            }, DELAY_MILLIS);
+            handler.postDelayed(() -> refresh(photoList, indexList), DELAY_MILLIS);
         } else {
             pressed.setClickable(false);
             notPressed.setClickable(false);
@@ -99,18 +108,14 @@ public class Quiz extends AppCompatActivity {
             pressed.setBackgroundColor(Color.RED);
             Handler handler = new Handler();
             Plays++;
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    refresh(view, pressed, notPressed, notPressed2, photoList, indexList, score);
-                }
-            }, DELAY_MILLIS);
+            handler.postDelayed(() -> refresh(photoList, indexList), DELAY_MILLIS);
         }
     }
 
-    private void refresh(ImageView view, Button option1, Button option2, Button option3, List<PhotoInfo> photoList, List<Integer> indexList, TextView score){
+    private void refresh(List<PhotoInfo> photoList, List<Integer> indexList){
         Collections.shuffle(photoList);
         Collections.shuffle(indexList);
+
         currentCorrect = photoList.get(0);
 
         view.setImageURI(currentCorrect.getPhotoUri());
@@ -126,6 +131,20 @@ public class Quiz extends AppCompatActivity {
         option2.setText(photoList.get(indexList.get(1)).getName());
         option3.setText(photoList.get(indexList.get(2)).getName());
         score.setText(Score + "/" + Plays);
+        if (hardmode){
+            timer = new CountDownTimer(30000, 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    countDown.setText(""+millisUntilFinished / 1000);
+                    // logic to set the EditText could go here
+                }
+
+                public void onFinish() {
+                    Plays++;
+                   refresh(photoList, indexList);
+                }
+            }.start();
+        }
     }
 
     private void colourCorrect(Button option1, Button option2, Button option3){

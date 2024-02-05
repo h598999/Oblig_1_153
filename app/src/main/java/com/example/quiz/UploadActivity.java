@@ -21,35 +21,29 @@ public class UploadActivity extends AppCompatActivity {
     private Uri imageUri;
 
     private DataManager quizDataManager;
+    Button uploadButton;
+    Button submitButton;
+    Button goButton;
+    ImageView view;
+    EditText input;
 
     @Override
     protected void onCreate(Bundle instanceViewState) {
         super.onCreate(instanceViewState);
         setContentView(R.layout.upload_activity);
-        Button uploadButton = findViewById(R.id.uploadPhoto_Button);
-        Button submitButton = findViewById(R.id.submit_Button);
-        Button goButton = findViewById(R.id.goButton);
+        uploadButton = findViewById(R.id.uploadPhoto_Button);
+        submitButton = findViewById(R.id.submit_Button);
+        goButton = findViewById(R.id.goButton);
+        view = findViewById(R.id.imageView);
+        input = findViewById(R.id.inputText_input);
 
         quizDataManager = (DataManager) getApplication();
 
-        uploadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
+        uploadButton.setOnClickListener(v -> openGallery());
 
-        submitButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){submit();}
-        });
+        submitButton.setOnClickListener(v -> submit());
 
-        goButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                go();
-            }
-        });
+        goButton.setOnClickListener(v -> go());
     }
     private void openGallery(){
         Intent intent = new Intent();
@@ -83,15 +77,15 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void reset(){
-        ImageView view = findViewById(R.id.imageView);
+        view = findViewById(R.id.imageView);
         view.setImageResource(0);
-        EditText input = findViewById(R.id.inputText_input);
+        input = findViewById(R.id.inputText_input);
         input.setText("");
         this.imageUri = null;
     }
 
     private String getEnteredText(){
-        EditText input = findViewById(R.id.inputText_input);
+        input = findViewById(R.id.inputText_input);
         String enteredText = input.getText().toString();
 
         if (enteredText == null || enteredText.isEmpty()){
@@ -117,7 +111,7 @@ public class UploadActivity extends AppCompatActivity {
         if (requestCode == 0 && resultCode == RESULT_OK && data != null){
             imageUri = data.getData();
             Log.d("Image", "Image selected: " + imageUri.toString());
-            ImageView view = findViewById(R.id.imageView);
+            view = findViewById(R.id.imageView);
             view.setImageURI(imageUri);
         }
     }

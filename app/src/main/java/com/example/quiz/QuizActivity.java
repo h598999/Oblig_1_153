@@ -19,6 +19,8 @@ public class QuizActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+        Boolean hardmode = getIntent().getBooleanExtra("hardmode", false);
+        Log.d("HardMode:", ""+ hardmode);
 
         Button backButton = findViewById(R.id.backQuiz_button);
         quizDataManager = (DataManager) getApplication();
@@ -31,6 +33,7 @@ public class QuizActivity extends AppCompatActivity {
                     finish();
                 } else {
                     Intent intent = new Intent(QuizActivity.this, Quiz.class);
+                    intent.putExtra("hardmode", hardmode);
                     startActivity(intent);
                     finish();
                 }
