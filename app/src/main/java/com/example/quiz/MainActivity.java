@@ -1,39 +1,49 @@
 package com.example.quiz;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
+    private Boolean isReady;
     private DataManager quizDataManager;
+    private Button quizButton;
+    private Button galleryButton;
+
+    private Switch difficultySwitch;
+
+    private Boolean hardmode;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button quizButton = findViewById(R.id.quiz_Button);
-        Button galleryButton = findViewById(R.id.gallery_Button);
+        quizButton = findViewById(R.id.quiz_Button);
+        galleryButton = findViewById(R.id.gallery_Button);
         quizDataManager = (DataManager) getApplication();
+        difficultySwitch = findViewById(R.id.MainDifficultySwitch_MAIN);
 
+        difficultySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            hardmode = isChecked;
+        });
 
         quizButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, QuizActivity.class );
-                startActivity(intent);
+                intent.putExtra("hardmode", hardmode);
+                startActivityForResult(intent, 0);
             }
         });
 

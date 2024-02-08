@@ -40,6 +40,9 @@
         <activity
             android:name=".UploadActivity"
             android:exported="true" />
+        <activity
+            android:name=".Quiz"
+            android:exported="true" />
 
     </application>
 
