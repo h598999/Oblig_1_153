@@ -3,7 +3,6 @@ package com.example.quiz;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,14 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 public class GalleryActivity extends AppCompatActivity {
 
     private DataManager quizDataManager;
     private Button backButton;
+
+    private LinearLayoutManager linearLayoutManager;
     private FloatingActionButton sortButton;
     private RecyclerView imageViews;
     private PhotoAdapter adapter;
@@ -36,16 +33,12 @@ public class GalleryActivity extends AppCompatActivity {
         sortButton = findViewById(R.id.GallerySort_Button);
         imageViews = (RecyclerView) findViewById(R.id.recyclerImageView_Gallery);
         adapter = new PhotoAdapter(quizDataManager, this);
+        linearLayoutManager = new LinearLayoutManager(this);
         imageViews.setAdapter(adapter);
-        imageViews.setLayoutManager(new LinearLayoutManager(this));
+        imageViews.setLayoutManager(linearLayoutManager);
         this.Sort();
 
-        backButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
 
         Button uploadActivity = findViewById(R.id.new_Button);
         uploadActivity.setOnClickListener(v -> {
@@ -58,8 +51,8 @@ public class GalleryActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void Sort(){
         DataManager.sort(quizDataManager.getPhotoList(), !DataManager.isListSorted(quizDataManager.getPhotoList()));
-        imageViews.setAdapter(adapter);
-        imageViews.setLayoutManager(new LinearLayoutManager(this));
+        //imageViews.setAdapter(adapter);
+        imageViews.setLayoutManager(linearLayoutManager);
         adapter.notifyDataSetChanged();
     }
 
@@ -70,7 +63,7 @@ public class GalleryActivity extends AppCompatActivity {
 
         adapter = new PhotoAdapter(quizDataManager, this);
         imageViews.setAdapter(adapter);
-        imageViews.setLayoutManager(new LinearLayoutManager(this));
+        imageViews.setLayoutManager(linearLayoutManager);
     }
 }
 

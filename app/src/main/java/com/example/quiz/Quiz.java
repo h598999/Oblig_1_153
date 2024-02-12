@@ -133,12 +133,9 @@ public class Quiz extends AppCompatActivity {
         score.setText(Score + "/" + Plays);
         if (hardmode){
             timer = new CountDownTimer(30000, 1000) {
-
                 public void onTick(long millisUntilFinished) {
                     countDown.setText(""+millisUntilFinished / 1000);
-                    // logic to set the EditText could go here
                 }
-
                 public void onFinish() {
                     Plays++;
                    refresh(photoList, indexList);
